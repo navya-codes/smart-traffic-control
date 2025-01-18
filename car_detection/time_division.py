@@ -1,10 +1,11 @@
 
+
 count_A = 15  #  count for Direction A
 count_B = 45 #  count for Direction B
 
 # Initialize emergency detection status
-emergency_detected = True # Change to True if an emergency vehicle is detected
-emergency_direction = 'B'  # 'A' or 'B' if emergency detected
+emergency_detected = False # Change to True if an emergency vehicle is detected
+emergency_direction = None  # 'A' or 'B' if emergency detected
 
 # Function to calculate green light durations
 def calculate_green_times(count_A, count_B):
