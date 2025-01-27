@@ -59,6 +59,13 @@ def detect_and_count_cars(video_path):
         if cv2.waitKey(30) & 0xFF == ord('q'):
             break
 
+     # Release the video and close all windows
+    video.release()
+    cv2.destroyAllWindows()
+
+    return car_count_A, car_count_B
+
+
 
 
 
