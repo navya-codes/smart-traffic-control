@@ -112,6 +112,30 @@ def detect_emergency_vehicle(video_path):
         red_intensity = cv2.countNonZero(red_mask)  # Number of red pixels
 
 
+           # Add the intensity to the list
+        light_intensity.append(red_intensity)
+
+        # Check if there is enough data to calculate flashing pattern
+        if len(light_intensity) > 10:  # Analyze the last 10 frames
+            del light_intensity[0]  # Remove the oldest frame's intensity
+
+            # Calculate the change in intensity between consecutive frames
+            intensity_changes = [abs(light_intensity[i] - light_intensity[i - 1]) for i in range(1, len(light_intensity))]
+
+            # If the change is above the threshold, it's likely flashing
+            if max(intensity_changes) > flashing_threshold:
+                print("Flashing red light detected!")
+                emergency_direction = "A"  # Assume the emergency vehicle is in Direction A for now
+                break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+    return emergency_direction
+
+
+
+
 
 
 
