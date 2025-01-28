@@ -68,5 +68,50 @@ def detect_and_count_cars(video_path):
 
 
 
+# Function to detect emergency vehicles using flashing red lights
+def detect_emergency_vehicle(video_path):
+    # Open the video file
+    cap = cv2.VideoCapture(video_path)
+
+    if not cap.isOpened():
+        print("Error: Could not open video file.")
+        exit()
+
+    # Initialize a list to store the red light intensity over time
+    light_intensity = []
+
+    # Set a threshold for detecting flashing lights
+    flashing_threshold = 5000  # Adjust based on your testing
+
+    frame_skip = 5  # Process every 5th frame
+    frame_count = 0
+    emergency_direction = None
+
+    while True:
+        ret, frame = cap.read()
+
+        if not ret:  # Break if the video ends
+            print("Video has ended.")
+            break
+
+        frame_count += 1
+        if frame_count % frame_skip != 0:
+            continue  # Skip this frame and move to the next
+
+        # Convert the frame to HSV for color detection
+        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+
+        # Define color range for red lights
+        red_lower = np.array([0, 120, 70])
+        red_upper = np.array([10, 255, 255])
+
+        # Create a mask for red color
+        red_mask = cv2.inRange(hsv, red_lower, red_upper)
+
+        # Count the intensity of the red light in the frame
+        red_intensity = cv2.countNonZero(red_mask)  # Number of red pixels
+
+
+
 
 
