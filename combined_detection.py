@@ -112,7 +112,7 @@ def detect_emergency_vehicle(video_path):
         red_intensity = cv2.countNonZero(red_mask)  # Number of red pixels
 
 
-           # Add the intensity to the list
+        # Add the intensity to the list
         light_intensity.append(red_intensity)
 
         # Check if there is enough data to calculate flashing pattern
@@ -133,6 +133,23 @@ def detect_emergency_vehicle(video_path):
 
     return emergency_direction
 
+
+# Function to calculate green times based on car count and emergency vehicle
+def calculate_green_times(count_A, count_B, emergency_direction):
+    if emergency_direction:
+        print(f"Emergency detected in Direction {emergency_direction}.")
+        if emergency_direction == "A":
+            return 60, 0  # Priority for Direction A (60 seconds for A, 0 for B)
+        else:
+            return 0, 60  # Priority for Direction B
+    else:
+        total_cars = count_A + count_B
+        if total_cars == 0:  # Avoid division by zero
+            return 30, 30  # Default green times for both directions
+        time_A = (count_A / total_cars) * 60  # Green time for Direction A
+        time_B = (count_B / total_cars) * 60  # Green time for Direction B
+        return int(time_A), int(time_B)
+        
 
 
 
